@@ -22,45 +22,40 @@ class upload{
 
     var type=""
 
-    var success:()->Unit={
-
-        println("success")
+    var success:(res:MutableList<String>)->Unit={res->
+        for(i in res)
+         println(i)
     }
 
-
-    var error:()->Unit={
-
-        println("error")
-
+    var error:(e:Exception)->Unit={e->
+        println(e.toString())
     }
 
     fun run(){
 
         when(type){
-
                 "url"->getUrl()
 
-
-
         }
-
 
     }
 
-    fun getUrl():MutableList<String>{
+    fun getUrl(){
 
-        var url=URL(this.url)
-        var text=url.readText()
-        var m=Regex("href=\"(http|https)://([^\"]+)\"").findAll(text)
-        var res= mutableListOf<String>()
-        for(i in m){
-            res.add(i.groupValues[2])
+        try {
+            var url = URL(this.url)
+            var text = url.readText()
+            var m = Regex("href=\"(http|https)://([^\"]+)\"").findAll(text)
+            var res = mutableListOf<String>()
+            for (i in m) {
+                res.add(i.groupValues[2])
+            }
+            success(res)
+
+        }catch(e:Exception){
+            error(e)
         }
 
-        for(i in res)
-            println(i)
-
-        return res
     }
 }
 
