@@ -7,6 +7,10 @@ import java.net.URL
 
 fun main(args: Array<String>) {
 
+    App {
+        url="http://home.firefoxchina.cn/"
+        type="url"
+    }
 
 
 }
@@ -34,7 +38,7 @@ class upload{
 
         when(type){
 
-            
+                "url"->getUrl()
 
 
 
@@ -47,11 +51,15 @@ class upload{
 
         var url=URL(this.url)
         var text=url.readText()
-        var m=Regex("href=\"([^\"]+)\"").findAll(text)
+        var m=Regex("href=\"(http|https)://([^\"]+)\"").findAll(text)
         var res= mutableListOf<String>()
         for(i in m){
-            res.add(i.groupValues[1])
+            res.add(i.groupValues[2])
         }
+
+        for(i in res)
+            println(i)
+
         return res
     }
 }
